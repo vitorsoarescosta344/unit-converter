@@ -16,7 +16,7 @@ export default function ButtonKeyboard({
   return (
     <>
       <TouchableOpacity
-        onPress={() => (feature || operator ? onPress() : onPress(text))}
+        onPress={() => onPress(text)}
         style={{
           width: size ? width * size : width,
           height: width,

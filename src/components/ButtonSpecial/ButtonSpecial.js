@@ -9,7 +9,7 @@ export default function Button({size, icon, operator, text, feature, onPress}) {
   return (
     <>
       <TouchableOpacity
-        onPress={() => (feature || operator ? onPress() : onPress(text))}
+        onPress={() => onPress()}
         style={{
           width: width,
           height: width * 2,

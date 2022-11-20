@@ -1,17 +1,37 @@
 import {useState} from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import ButtonKeyboard from '../../components/ButtonKeyboard';
 import ButtonSpecial from '../../components/ButtonSpecial';
 //import Button from '../../components/Button';
 import {Picker} from '@react-native-picker/picker';
 import Container from '../../layout/Container';
+import {useTheme} from '@rneui/themed';
 
 export default function HomeScreen() {
   const [firstValue, setFirstValue] = useState('0');
   const [secondValue, setSecondValue] = useState('0');
-  const [operation, setOperation] = useState('');
+  const [editingValue, setEditingValue] = useState('first-value');
+
+  const {theme} = useTheme();
 
   const units = ['km', 'm', 'dm', 'cm', 'mm'];
+
+  function onKeyboardPress(value) {
+    if (firstValue === '0' && editingValue === 'first-value') {
+      setFirstValue(value);
+    } else if (firstValue !== '0' && editingValue === 'first-value') {
+      setFirstValue(old => setFirstValue(old + value));
+    } else if (secondValue === '0' && editingValue === 'second-value') {
+      setSecondValue(value);
+    } else if (secondValue !== '0' && editingValue === 'second-value') {
+      setSecondValue(old => setSecondValue(old + value));
+    }
+  }
+
+  function allClear() {
+    setFirstValue('0');
+    setSecondValue('0');
+  }
 
   return (
     <>
@@ -33,7 +53,19 @@ export default function HomeScreen() {
                 ))}
               </Picker>
             </View>
-            <Text style={{fontSize: 40, fontWeight: '600'}}>{firstValue}</Text>
+            <TouchableOpacity onPress={() => setEditingValue('first-value')}>
+              <Text
+                style={{
+                  fontSize: 40,
+                  fontWeight: '600',
+                  color:
+                    editingValue === 'first-value'
+                      ? theme.colors.warning
+                      : theme.colors.black,
+                }}>
+                {firstValue}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -51,26 +83,72 @@ export default function HomeScreen() {
                 ))}
               </Picker>
             </View>
-            <Text style={{fontSize: 40, fontWeight: '600'}}>{secondValue}</Text>
+            <TouchableOpacity onPress={() => setEditingValue('second-value')}>
+              <Text
+                style={{
+                  fontSize: 40,
+                  fontWeight: '600',
+                  color:
+                    editingValue === 'second-value'
+                      ? theme.colors.warning
+                      : theme.colors.black,
+                }}>
+                {secondValue}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         {/* <View style={{flexWrap: 'wrap', flexDirection: 'row'}}></View> */}
         <View style={{flexDirection: 'row'}}>
           <View style={{flex: 1, flexWrap: 'wrap', flexDirection: 'row'}}>
-            <ButtonKeyboard text={'7'} />
-            <ButtonKeyboard text={'8'} />
-            <ButtonKeyboard text={'9'} />
-            <ButtonKeyboard text={'4'} />
-            <ButtonKeyboard text={'5'} />
-            <ButtonKeyboard text={'6'} />
-            <ButtonKeyboard text={'1'} />
-            <ButtonKeyboard text={'2'} />
-            <ButtonKeyboard text={'3'} />
-            <ButtonKeyboard size={2} text={'0'} />
-            <ButtonKeyboard text={','} />
+            <ButtonKeyboard
+              text={'7'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'8'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'9'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'4'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'5'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'6'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'1'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'2'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'3'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              size={2}
+              text={'0'}
+              onPress={text => onKeyboardPress(text)}
+            />
+            <ButtonKeyboard
+              text={'.'}
+              onPress={text => onKeyboardPress(text)}
+            />
           </View>
           <View>
-            <ButtonSpecial text={`AC`} />
+            <ButtonSpecial text={`AC`} onPress={allClear} />
             <ButtonSpecial icon={'backspace'} />
           </View>
         </View>
