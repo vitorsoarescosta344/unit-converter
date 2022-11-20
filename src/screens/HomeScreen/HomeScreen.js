@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import ButtonKeyboard from '../../components/ButtonKeyboard';
 import ButtonSpecial from '../../components/ButtonSpecial';
 //import Button from '../../components/Button';
+import {Picker} from '@react-native-picker/picker';
 import Container from '../../layout/Container';
 
 export default function HomeScreen() {
@@ -10,67 +11,48 @@ export default function HomeScreen() {
   const [secondValue, setSecondValue] = useState('0');
   const [operation, setOperation] = useState('');
 
-  function onKeyboardPress(value) {
-    if (firstValue === '0' && operation === '') {
-      setFirstValue(value);
-    } else if (firstValue !== '0' && operation === '') {
-      setFirstValue(old => setFirstValue(old + value));
-    } else if (secondValue === '0' && operation !== '') {
-      setSecondValue(value);
-    } else if (secondValue !== '0' && operation !== '') {
-      setSecondValue(old => setSecondValue(old + value));
-    }
-  }
-
-  function clearHandler() {
-    setFirstValue('0');
-    setSecondValue('0');
-    setOperation('');
-  }
-
-  function resultHandler() {
-    switch (operation) {
-      case '+':
-        setFirstValue(parseFloat(firstValue) + parseFloat(secondValue));
-        setOperation('');
-        setSecondValue('0');
-        break;
-      case '-':
-        setFirstValue(parseFloat(firstValue) - parseFloat(secondValue));
-        setOperation('');
-        setSecondValue('0');
-        break;
-      case '*':
-        setFirstValue(parseFloat(firstValue) * parseFloat(secondValue));
-        setOperation('');
-        setSecondValue('0');
-        break;
-      case '/':
-        setFirstValue(parseFloat(firstValue) / parseFloat(secondValue));
-        setOperation('');
-        setSecondValue('0');
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  function setOperationHandler(op) {
-    if (operation !== '') {
-      resultHandler();
-    } else {
-      setOperation(op);
-    }
-  }
+  const units = ['km', 'm', 'dm', 'cm', 'mm'];
 
   return (
     <>
       <Container>
-        <View
-          style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-          <Text style={{fontSize: 40, fontWeight: '600'}}>{firstValue}</Text>
-          <Text style={{fontSize: 40, fontWeight: '600'}}>{secondValue}</Text>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}>
+            <View style={{width: 150, height: 40}}>
+              <Picker
+                mode="dropdown"
+                selectedValue={'km'}
+                onValueChange={v => setPronoum(v)}>
+                {units.map((value, index) => (
+                  <Picker.Item label={value} value={value} key={index} />
+                ))}
+              </Picker>
+            </View>
+            <Text style={{fontSize: 40, fontWeight: '600'}}>{firstValue}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}>
+            <View style={{width: 150, height: 40}}>
+              <Picker
+                mode="dropdown"
+                selectedValue={'m'}
+                onValueChange={v => setPronoum(v)}>
+                {units.map((value, index) => (
+                  <Picker.Item label={value} value={value} key={index} />
+                ))}
+              </Picker>
+            </View>
+            <Text style={{fontSize: 40, fontWeight: '600'}}>{secondValue}</Text>
+          </View>
         </View>
         {/* <View style={{flexWrap: 'wrap', flexDirection: 'row'}}></View> */}
         <View style={{flexDirection: 'row'}}>
